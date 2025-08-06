@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Knowledge Quiz</title>
+  <style>
+    body{
+    background-color: #f1ee8e;
+    /* justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    display: flex; */
+    }
+
+    .navbar{
+        background-color: #e69b00;
+        text-align: center;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    
+    .quiz{
+    text-decoration: none;
+    color: #e6cc00;
+    padding: 15px;
+    font-size: 23px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    .quiz:hover{
+    color: #e47200;
+    }
+
+    .quiz-container {
+      background: #f7f5bc;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+      top: 50px;
+      left: 310px;
+    }
+    #question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    #answers button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #ece75f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    #answers button:hover {
+      background-color: #e5de00;
+    }
+    #answers button.correct {
+      background-color: #a5d6a7;
+    }
+    #answers button.wrong {
+      background-color: #ef9a9a;
+    }
+    #nextBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #e69b00;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #nextBtn:disabled {
+      background-color: #e69b00;
+      cursor: default;
+    }
+    .hidden {
+      display: none;
+    }
+    
+    .button{
+        background-color: #e69b00;
+        padding: 10px;
+    }
+
+    .button:hover{
+        background-color: #e6cc00;
+    }
+  </style>
+</head>
+<body>
+    <header>
+            <nav class="navbar">
+                <a class="quiz" href="knowledge.html">Knowledge Quiz</a>
+                <a class="quiz" href="personality.html">Personality Quiz</a>
+                <a class="quiz" href="artist.html">Artist Quiz</a>
+                <a class="quiz" href="education.html">Education Quiz</a>
+            </nav>
+        </header>
+  <div class="quiz-container">
+    <h1>Quiz Quest</h1>
+    <div id="quiz">
+      <p id="question">Loading...</p>
+      <div id="answers"></div>
+      <button class="button" id="nextBtn" disabled>Next</button>
+    </div>
+    <div id="result" class="hidden">
+      <h2>Your Score: <span id="score"></span></h2>
+      <button class="button" onclick="location.reload()">Try Again</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the capital of France?",
+        answers: ["Paris", "London", "Berlin", "Madrid"],
+        correct: 0
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        answers: ["Earth", "Mars", "Jupiter", "Saturn"],
+        correct: 1
+      },
+      {
+        question: "What is the chemical symbol for gold?",
+        answers: ["G", "Ag", "Au", "Go"],
+        correct: 2
+      },
+      {
+        question: "Which language is used for web development?",
+        answers: ["Python", "HTML", "C++", "Java"],
+        correct: 1
+      },
+      {
+        question: "Who painted the Mona Lisa?",
+        answers: ["Picasso", "Van Gogh", "Leonardo da Vinci", "Michelangelo"],
+        correct: 2
+      }
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEl = document.getElementById('answers');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultEl = document.getElementById('result');
+    const scoreEl = document.getElementById('score');
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const current = quizData[currentQuestion];
+      questionEl.textContent = current.question;
+      answersEl.innerHTML = '';
+      nextBtn.disabled = true;
+
+      current.answers.forEach((answer, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.addEventListener('click', () => selectAnswer(btn, index));
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(button, index) {
+      const isCorrect = index === quizData[currentQuestion].correct;
+      if (isCorrect) {
+        button.classList.add('correct');
+        score++;
+      } else {
+        button.classList.add('wrong');
+        answersEl.children[quizData[currentQuestion].correct].classList.add('correct');
+      }
+      [...answersEl.children].forEach(btn => btn.disabled = true);
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      document.getElementById('quiz').classList.add('hidden');
+      resultEl.classList.remove('hidden');
+      scoreEl.textContent = `${score} / ${quizData.length}`;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

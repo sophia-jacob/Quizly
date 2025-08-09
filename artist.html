@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>What Kind of Artist Are You?</title>
+  <link href="artist.css" rel="stylesheet">
+  <script src="artist.js" defer></script>
+  <link rel="icon" href="https://png.pngtree.com/png-clipart/20230425/original/pngtree-pop-quiz-clipart-images-png-image_9095199.png">
 </head>
 <body>
   <header>
@@ -10,7 +13,6 @@
                 <a class="quiz" href="knowledge.html">Knowledge Quiz</a>
                 <a class="quiz" href="personality.html">Personality Quiz</a>
                 <a class="quiz" href="artist.html">Artist Quiz</a>
-                <a class="quiz" href="education.html">Education Quiz</a>
             </nav>
         </header>
   <div class="quiz-container">
@@ -26,193 +28,5 @@
       <button class="button" onclick="location.reload()">Try Again</button>
     </div>
   </div>
-  <style>
-  body{
-    background-color: #f1ee8e;
-    /* justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    display: flex; */
-  }
-
-    .navbar{
-        background-color: #e69b00;
-        text-align: center;
-        padding: 30px;
-        border-radius: 10px;
-    }
-
-    
-    .quiz{
-    text-decoration: none;
-    color: #e6cc00;
-    padding: 15px;
-    font-size: 23px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    }
-
-    .quiz:hover{
-    color: #e47200;
-    }
-    .quiz-container {
-      background: #f7f5bc;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-      top: 50px;
-      left: 330px;
-    }
-    #question {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-    #answers button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: #ece75f;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    #answers button:hover {
-      background: #e5de00;
-    }
-    #nextBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #e69b00;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    #nextBtn:disabled {
-      background: #e69b00;
-      cursor: default;
-    }
-    #nextBtn:hover{
-      background-color: #e6b400;
-    }
-    .hidden {
-      display: none;
-    }
-    .button{
-      background-color: #e69b00;
-        padding: 10px;
-    }
-
-    .button:hover{
-        background-color: #e6cc00;
-    }
-
-  </style>
-    <script>
-    const quizData = [
-      {
-        question: "Which activity sounds most fun to you?",
-        answers: [
-          { text: "Painting a landscape", type: "Painter" },
-          { text: "Writing poetry", type: "Writer" },
-          { text: "Playing an instrument", type: "Musician" },
-          { text: "Taking artistic photos", type: "Photographer" }
-        ]
-      },
-      {
-        question: "Which tool would you grab first?",
-        answers: [
-          { text: "A brush", type: "Painter" },
-          { text: "A pen", type: "Writer" },
-          { text: "A guitar", type: "Musician" },
-          { text: "A camera", type: "Photographer" }
-        ]
-      },
-      {
-        question: "How do you express your emotions?",
-        answers: [
-          { text: "Through colors and shapes", type: "Painter" },
-          { text: "Through melodies and rhythm", type: "Musician" },
-          { text: "Through words and stories", type: "Writer" },
-          { text: "Through capturing moments", type: "Photographer" }
-        ]
-      },
-      {
-        question: "Your creative space is:",
-        answers: [
-          { text: "Covered in sketches and paint", type: "Painter" },
-          { text: "Filled with books and journals", type: "Writer" },
-          { text: "Stacked with instruments", type: "Musician" },
-          { text: "Lit perfectly with cool props", type: "Photographer" }
-        ]
-      }
-    ];
-
-    let currentQuestion = 0;
-    let scores = {
-      Painter: 0,
-      Musician: 0,
-      Writer: 0,
-      Photographer: 0
-    };
-
-    const questionEl = document.getElementById('question');
-    const answersEl = document.getElementById('answers');
-    const nextBtn = document.getElementById('nextBtn');
-    const resultEl = document.getElementById('result');
-    const resultText = document.getElementById('resultText');
-
-    function loadQuestion() {
-      const current = quizData[currentQuestion];
-      questionEl.textContent = current.question;
-      answersEl.innerHTML = '';
-      nextBtn.disabled = true;
-
-      current.answers.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.textContent = answer.text;
-        btn.onclick = () => {
-          scores[answer.type]++;
-          [...answersEl.children].forEach(b => b.disabled = true);
-          btn.style.backgroundColor = '#aed581';
-          nextBtn.disabled = false;
-        };
-        answersEl.appendChild(btn);
-      });
-    }
-
-    nextBtn.addEventListener('click', () => {
-      currentQuestion++;
-      if (currentQuestion < quizData.length) {
-        loadQuestion();
-      } else {
-        showResult();
-      }
-    });
-
-    function showResult() {
-      document.getElementById('quiz').classList.add('hidden');
-      resultEl.classList.remove('hidden');
-
-      const topType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-      const messages = {
-        Painter: "🎨 Painter — You express emotion through visuals, color, and form. You're imaginative, intuitive, and see the world in shapes and shades.",
-        Musician: "🎵 Musician — Rhythm flows in your soul. You feel deeply and channel those emotions through sound.",
-        Writer: "📝 Writer — Words are your canvas. You love expressing ideas, stories, and emotions through language.",
-        Photographer: "📸 Photographer — You have an eye for moments. You capture beauty, emotion, and narrative through a lens."
-      };
-
-      resultText.textContent = messages[topType];
-    }
-
-    loadQuestion();
-  </script>
 </body>
 </html>
